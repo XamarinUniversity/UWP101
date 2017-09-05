@@ -1,0 +1,14 @@
+﻿<Page
+    x:Class="TipCalculator.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:TipCalculator">
+
+    <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+		<TextBox   x:Name="billInput" TextChanged="OnBillChanged"/>
+		<TextBlock x:Name="tipOutput" />
+
+	</StackPanel>
+
+</Page>
