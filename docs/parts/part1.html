@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 1: Create and run a UWP app</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>UWP101 Introduction to the Universal Windows Platform</header>
+
+    <section id="main">
+        <h2>Exercise 1: Create and run a UWP app</h2>
+<p>The goal of this lab is to write a simple but functional UWP app: you will create a new project, add a minimal UI, implement a small piece of behavior, and then run the app on one or more devices/emulators. </p>
+<p>You will be coding a Tip Calculator app. The app will have a single page containing a <code>TextBox</code> and a <code>TextBlock</code> (see below). The user will type the amount of their restaurant bill into the <code>TextBox</code>. Your code will react to the <code>TextBox</code>'s <code>TextChanged</code> event to calculate a 15% tip and load the amount of the tip into the <code>TextBlock</code>. </p>
+<p>The finished UI will look like this:</p>
+<figure class="figure">
+<img src="images/exercise1_completed.png" alt="image" />
+</figure>
+<blockquote class="info-quote">To complete this exercise, you will need a Windows development environment with Visual Studio. We recommend Windows 10 Anniversary Edition or higher because the exercise uses APIs that were added in that release. It is also possible to develop on a previous version of Windows and test on an emulator rather than the local device, please see this <a href="https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/test-with-the-emulator" target="_blank">setup</a> page for an example of how to do this.
+<strong>Note:</strong> You must enable Developer Mode on your development machine to work with UWP apps. Visual Studio will prompt you to do this the first time it is needed. You can also use <a href="https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development" target="_blank">these</a> instructions if you would like to enable it ahead of time.
+</blockquote>
+
+<hr>
+<h2>Create the app</h2>
+<ol>
+<li>Open Visual Studio.</li>
+<li>Create a new UWP application using the <strong>Blank App</strong> template.</li>
+<li>Name the project <strong>Tip Calculator</strong>.</li>
+</ol>
+
+<hr>
+<h2>Create the UI</h2>
+<ol>
+<li>Open <strong>MainPage.xaml</strong>. </li>
+<li>Change the root layout panel from a <code>Grid</code> to a <code>StackPanel</code>. </li>
+<li>Add a <code>TextBox</code> and a <code>TextBlock</code>. </li>
+<li>Add <code>x:Name=&quot;billInput&quot;</code> to the <code>TextBox</code> element so you can access it from code behind. </li>
+<li>Add <code>x:Name=&quot;tipOutput&quot;</code> to the <code>TextBlock</code> element so you can access it from code behind. </li>
+</ol>
+<pre class="prettyprint-collapse"><code>&lt;StackPanel Background=&quot;{ThemeResource ApplicationPageBackgroundThemeBrush}&quot; HorizontalAlignment=&quot;Center&quot; VerticalAlignment=&quot;Center&quot;&gt;
+   &lt;TextBox x:Name=&quot;billInput&quot; /&gt;
+   &lt;TextBlock x:Name=&quot;tipOutput&quot; /&gt;
+&lt;/StackPanel&gt;
+</code></pre>
+
+
+<hr>
+<h2>Implement behavior</h2>
+<ol>
+<li>Subscribe to the <code>TextBox</code>'s <code>TextChanged</code> event. You can do this in XAML (see below) or in code using the <code>x:Name</code> of the <code>TextBox</code>.</li>
+</ol>
+<pre class="prettyprint"><code>&lt;TextBox x:Name=&quot;billInput&quot; TextChanged=&quot;OnBillChanged&quot; /&gt;
+</code></pre>
+
+<ol start="3">
+<li>
+Open <strong>MainPage.xaml.cs</strong>.
+</li>
+<li>
+In your <code>TextChanged</code> handler, retrieve the value from the <code>TextBox</code>, use it to compute a 15% tip, and load the tip into the <code>TextBlock</code>.
+</li>
+</ol>
+<pre class="prettyprint-collapse"><code>void OnBillChanged(object sender, TextChangedEventArgs e)
+{
+  double bill;
+  if (!double.TryParse(billInput.Text, out bill))
+    return;
+  double tip = bill * 0.15;
+  tipOutput.Text = string.Format(&quot;{0:C}&quot;, tip);
+}
+</code></pre>
+
+
+<hr>
+<h2>Run the app</h2>
+<ol>
+<li>
+If your development machine is running Windows 10, run the app on the local machine.
+</li>
+<li>
+If you have time, run the app on one of the emulators (e.g. a Mobile Emulator).
+</li>
+</ol>
+<figure class="figure">
+<img src="images/exercise1_completed.png" alt="The UI should look something like this" />
+</figure>
+
+<hr>
+<h2>Congratulations!</h2>
+<p>This lab walked you through building a simple UWP app: you created a project, defined the UI in XAML, and wrote the code-behind. You then tested the app on the local machine and/or an emulator, which let you verify that a single UWP app can run on multiple Windows device types.</p>
+<p>You can view the completed solution in the <strong>Exercise 1 &gt; Completed</strong> folder of your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/UWP101/">course materials</a>.</p>
+
+
+        <div class="align-right">
+            <a href="../StartHere.html">Go Back</a>
+        </div>
+
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/jquery.imagemapster.min.js"></script>
+    <script src="./res/js/imagemap.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft. All rights reserved.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+
+</body>
+</html>
