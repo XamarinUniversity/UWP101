@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 4: Write version-adaptive code</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>UWP101 Introduction to the Universal Windows Platform</header>
+
+    <section id="main">
+        <h2>Exercise 4: Write version-adaptive code</h2>
+<p>This exercise is a continuation of the previous exercise.</p>
+<p>Here you will add version testing to the <strong>ApiContractExplorer</strong>. The app will now determine which API Contracts are available and test which versions of those contracts are supported. The screenshot below shows the UI - note how each contract name is followed by which versions are available.</p>
+<figure class="figure">
+<img src="images/Exercise4_Completed.png" alt="Screenshot of completed exercise running." style="max-height: 500px;" />
+</figure>
+<blockquote class="info-quote">To complete this exercise, you will need a Windows development environment with Visual Studio. We recommend Windows 10 Anniversary Edition or higher because the exercise uses APIs that were added in that release. It is also possible to develop on a previous version of Windows and test on an emulator rather than the local device, please see this <a href="https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/test-with-the-emulator" target="_blank">setup</a> page for an example of how to do this.
+</blockquote>
+
+<hr>
+<h2>Test for API contract versions</h2>
+<ol>
+<li>Open <strong>MainPage.xaml.cs</strong>. </li>
+<li>Locate the <code>OnNavigatedTo</code> method. All your work will be done inside this method. </li>
+<li>Modify the existing code so it will test for version 1, version 2, and version 3 of each API Contract. Ideally, you should add only one string for each available contract into the <code>ObservableCollection</code> regardless of the number of versions available - this will ensure that the <code>Count</code> of available contracts remains accurate. There are many ways to code this, a simple implementation is give below. </li>
+</ol>
+<pre class="prettyprint-collapse"><code>string result = &quot;&quot;;
+
+if (ApiInformation.IsApiContractPresent(contract, 1)) result += contract + &quot; v1&quot;;
+if (ApiInformation.IsApiContractPresent(contract, 2)) result += &quot; v2&quot;;
+if (ApiInformation.IsApiContractPresent(contract, 3)) result += &quot; v3&quot;;
+
+if (result != &quot;&quot;)
+   availableContracts.Add(result);
+</code></pre>
+
+
+<hr>
+<h2>Run the app</h2>
+<ol>
+<li>Run the app to test your work. Ideally, you should run it on devices from two different device families. For example, you could run it on Local Machine to see the results from the Desktop family and then run it on a Mobile Emulator to see the results from the Mobile family.</li>
+</ol>
+<figure class="figure">
+<img src="images/Exercise4_Completed.png" alt="Screenshot of completed exercise running." style="max-height: 500px;" />
+</figure>
+
+<hr>
+<h2>Congratulations!</h2>
+<p>In this lab, you coded the key technique needed to write version-adaptive UWP code. Notice how your code tested for API Contract version rather than Windows version - this is the recommended best practice for UWP.</p>
+<p>You can view the completed solution in the <strong>Exercise 4 &gt; Completed</strong> folder of your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/UWP101/">course materials</a>.</p>
+
+
+        <div class="align-right">
+            <a href="../StartHere.html">Go Back</a>
+        </div>
+
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/jquery.imagemapster.min.js"></script>
+    <script src="./res/js/imagemap.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft. All rights reserved.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+
+</body>
+</html>

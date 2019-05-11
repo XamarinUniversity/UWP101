@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 3: Write platform adaptive code</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>UWP101 Introduction to the Universal Windows Platform</header>
+
+    <section id="main">
+        <h2>Exercise 3: Write platform adaptive code</h2>
+<p>Here you will write code to test for the presence of the various API Contracts. This is a core skill necessary to write platform-adaptive code in UWP.</p>
+<p>You will be working on a simple app that determines which API Contracts are available on the runtime device. The UI displays the number of available contracts and lists all the contract names. The UI is already built for you in the starter code; your job is to write the code that tests for the API Contracts.</p>
+<p>Open the <strong>Exercise 3 &gt; Start</strong> solution from your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/UWP101/">course materials</a>.</p>
+<figure class="figure">
+<img src="images/Exercise3_Completed.png" alt="Screenshot of completed exercise running." style="max-height: 500px;" />
+</figure>
+<blockquote class="info-quote">To complete this exercise, you will need a Windows development environment with Visual Studio. We recommend Windows 10 Anniversary Edition or higher because the exercise uses APIs that were added in that release. It is also possible to develop on a previous version of Windows and test on an emulator rather than the local device, please see this <a href="https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/test-with-the-emulator" target="_blank">setup</a> page for an example of how to do this.
+</blockquote>
+
+<hr>
+<h2>Examine the starter code</h2>
+<p>Here we spend a few minutes surveying the provided starter solution. There is no code to write in this part. </p>
+<ol>
+<li>Open the <strong>ApiContractExplorer</strong> solution in the Start folder. </li>
+<li>Open <strong>MainPage.xaml</strong>. </li>
+<li>The first UI element is a <code>TextBlock</code> that displays the total number of API Contracts available on the runtime device. </li>
+<li>The second UI element is a <code>ListView</code> that shows the name of each available contract. </li>
+<li>Both UI elements use data binding to set their data source. The <code>ListView</code> will display a list of API Contract names while the <code>TextBlock</code> will show the Count property from that same list. </li>
+<li>Open <strong>MainPage.xaml.cs</strong>. </li>
+<li>Locate the declaration of the <code>allContracts</code> array. This contains the name of every API Contract in UWP (at the time of this writing). </li>
+<li>Locate the declaration of the <code>availableContracts</code> collection. You will populate this with the contracts available on your device. </li>
+</ol>
+
+<hr>
+<h2>Test for API contracts</h2>
+<p>Your goal is to write code to test which API Contracts are available. The most interesting part of the exercise is running the app on devices from different Device Families to see how the available contracts differ by device. </p>
+<ol>
+<li>
+Open <strong>MainPage.xaml.cs</strong>. 
+</li>
+<li>
+Locate the <code>OnNavigatedTo</code> method. All your code will be written inside this method. 
+</li>
+<li>
+Use the <code>ApiInformation.IsApiContractPresent</code> method to test each string in the array of API Contract names. Pass 1 as the version number (we are not concerned with versions in this exercise, that is covered in the next lab). Add the name of each available contract to the <code>ObservableCollection</code>. The key lines of code are shown below. 
+</li>
+</ol>
+<pre class="prettyprint-collapse"><code>if (ApiInformation.IsApiContractPresent(contract, 1))
+   availableContracts.Add(contract);
+</code></pre>
+
+
+<hr>
+<h2>Run the app</h2>
+<ol>
+<li>Run the app to test your work. Ideally, you should run it on devices from two different device families. For example, you could run it on Local Machine to see the results from the Desktop family and then run it on a Mobile Emulator to see the results from the Mobile family.</li>
+</ol>
+<figure class="figure">
+<img src="images/Exercise3_Completed.png" alt="Screenshot of completed app running." style="max-height: 500px;" />
+</figure>
+
+<hr>
+<h2>Congratulations!</h2>
+<p>This exercise implements something in the category of <em>tooling or utilities</em> rather than a consumer-facing app. It should give you some intuition about the number of API Contracts available on each UWP Device Family.</p>
+<p>You can view the completed solution in the <strong>Exercise 3 &gt; Completed</strong> folder of your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/UWP101/">course materials</a>.</p>
+
+
+        <div class="align-right">
+            <a href="../StartHere.html">Go Back</a>
+        </div>
+
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/jquery.imagemapster.min.js"></script>
+    <script src="./res/js/imagemap.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft. All rights reserved.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+
+</body>
+</html>

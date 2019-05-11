@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 2: Respond to lifecycle events</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>UWP101 Introduction to the Universal Windows Platform</header>
+
+    <section id="main">
+        <h2>Exercise 2: Respond to lifecycle events</h2>
+<p>This exercise is a continuation of the previous exercise. You can use your existing solution or begin from the prior <strong>Exercise 1 &gt; Completed</strong> solution in your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/UWP101/">course materials</a>.</p>
+<p>This lab adds save/restore of app state to the <strong>TipCalculator</strong>. You will save the user's data when your app enters the background and conditionally reload the saved data at startup.</p>
+<blockquote class="info-quote">To complete this exercise, you will need a Windows development environment with Visual Studio. We recommend Windows 10 Anniversary Edition or higher because the exercise uses APIs that were added in that release. It is also possible to develop on a previous version of Windows and test on an emulator rather than the local device, please see this <a href="https://docs.microsoft.com/en-us/windows/uwp/debug-test-perf/test-with-the-emulator" target="_blank">setup</a> page for an example of how to do this.
+</blockquote>
+
+<hr>
+<h2>Handle background notifications</h2>
+<p>The first goal is to save the user's data every time the app enters the background. You will do this inside your <code>MainPage</code> class because that page is the owner of the data you need to save. In a more complex app, it would make sense to centralize the data management; however, we are intentionally keeping this simple to show the core technique. </p>
+<ol>
+<li>Continue with the <strong>TipCalculator</strong> solution. </li>
+<li>Open <code>MainPage.xaml.cs</code>. </li>
+<li>Override the <code>OnNavigatedTo</code> method. In your override, subscribe to the Application's <code>EnteredBackground</code> event. </li>
+</ol>
+<pre class="prettyprint-collapse"><code>protected override void OnNavigatedTo(NavigationEventArgs e)
+{
+   App.Current.EnteredBackground += OnEnteredBackground;
+}
+</code></pre>
+
+<ol start="4">
+<li>Override the <code>OnNavigatingFrom</code> method. In your override, unsubscribe from the Application's <code>EnteredBackground</code> event.</li>
+</ol>
+<pre class="prettyprint-collapse"><code>protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+{
+   App.Current.EnteredBackground -= OnEnteredBackground;
+}
+</code></pre>
+
+
+<hr>
+<h2>Save state</h2>
+<ol>
+<li>Continuing in the <code>MainPage.xaml.cs</code></li>
+<li>In your <code>EnteredBackground</code> handler, save the contents of the <code>TextBox</code> using the <code>ApplicationData</code> APIs. </li>
+</ol>
+<pre class="prettyprint-collapse"><code>ApplicationData.Current.LocalSettings.Values[&quot;SavedBillAmount&quot;] = billInput.Text;
+</code></pre>
+
+
+<hr>
+<h2>Load state</h2>
+<p>Next you need to load the saved state at startup. You'll do this conditionally: only when the last run of the app ended in either the <code>ClosedByUser</code> or <code>Terminated</code> state. </p>
+<ol>
+<li>
+Open <strong>App.xaml.cs</strong>. 
+</li>
+<li>
+Add the following string property to the <code>App</code> class. 
+</li>
+</ol>
+<pre class="prettyprint"><code>public static string SavedBillAmount { get; set; }
+</code></pre>
+
+<ol start="3">
+<li>
+Locate the <code>OnLaunched</code> method. 
+</li>
+<li>
+Modify the starter code inside <code>OnLaunched</code> so you have an if statement that tests for either the <code>ClosedByUser</code> or <code>Terminated</code> state. 
+</li>
+</ol>
+
+<hr>
+<h2>Restore state</h2>
+<p>The last coding step is to reload the saved data into the UI. </p>
+<ol>
+<li>
+Open <strong>MainPage.xaml.cs</strong>.
+</li>
+<li>
+Locate your override of the <code>OnNavigatedTo</code> method. 
+</li>
+<li>
+In your override, test if there is a value in the App's <code>SavedBillAmount</code> property. If so, load that value into the <code>TextBox</code>'s <code>Text</code> property. 
+</li>
+<li>
+Modify the starter code inside <code>OnLaunched</code> so you have an if statement that tests for either the <code>ClosedByUser</code> or <code>Terminated</code> state.
+</li>
+<li>
+Inside the if, read the saved value from <code>ApplicationData</code> and store it in the <code>SavedBillAmount</code> property. Be sure to add some error checking to make sure the saved value exists. 
+</li>
+</ol>
+<pre class="prettyprint-collapse"><code>if (!string.IsNullOrEmpty(App.SavedBillAmount))
+{
+   billInput.Text = App.SavedBillAmount;
+}
+</code></pre>
+
+
+<hr>
+<h2>Test your app</h2>
+<p>Here you will test that the save/restore code is functioning properly. 
+Remember that you only want the restore to occur when the <code>PreviousExecutionState</code> is either <code>ClosedByUser</code> or <code>Terminated</code>. </p>
+<ol>
+<li>Run the app.</li>
+<li>Enter a value into the <code>TextBox</code>.</li>
+<li>Shut down the app using the window's close button.</li>
+<li>Run the app again: the state will be <code>ClosedByUser</code> so the previous value should be restored.</li>
+<li>Use Task Manager to kill the app.</li>
+<li>Run the app again: the state will be <code>NotRunning</code> so the previous value should  <strong>NOT</strong> be restored.</li>
+<li>Enter a value into the <code>TextBox</code>.</li>
+<li>Use the Visual Studio Standard Toolbar and its &quot;Lifecycle Events&quot; option to &quot;Suspend and shutdown&quot; the app.</li>
+<li>Run the app again: the state will be <code>Terminated</code> so the previous value should be restored.</li>
+</ol>
+
+<hr>
+<h2>Congratulations!</h2>
+<p>This exercise let you implement an important technique that UWP apps use to provide a great user experience. You saved the user's work automatically every time the app entered the background. This meant you had all their data available at startup so you could return the app to the exact state it was in when the user ended their previous session. </p>
+<p>You can view the completed solution in the <strong>Exercise 2 &gt; Completed</strong> folder of your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/UWP101/">course materials</a>.</p>
+
+
+        <div class="align-right">
+            <a href="../StartHere.html">Go Back</a>
+        </div>
+
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/jquery.imagemapster.min.js"></script>
+    <script src="./res/js/imagemap.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft. All rights reserved.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+
+</body>
+</html>
